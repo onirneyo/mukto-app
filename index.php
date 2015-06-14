@@ -174,6 +174,7 @@ class INDEX //extends REST
             $this->response('',204);
         }
     }
+    //
     
     private function registration()
     {
@@ -221,8 +222,8 @@ class INDEX //extends REST
                         if(count($result) > 0)
                         {
                             //$result = $result->fetch_assoc();// mysql_fetch_array($sql,MYSQL_ASSOC);
-                            echo $result['first_name'];
-                            echo $result['last_name'];
+                            //echo $result['first_name'];
+                            //echo $result['last_name'];
                             //$_SESSION['USER_EMAIL'] = $result['user_email'];
                             //$_SESSION['USER_STATUS'] = $result['user_status'];
                             $this->response($this->json($result), 200);
