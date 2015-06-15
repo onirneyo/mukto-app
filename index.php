@@ -83,6 +83,8 @@ class INDEX //extends REST
                             $this->_request = $this->cleanInputs($_POST);
                             break;
                     case "GET":
+                         $this->_request = $this->cleanInputs($_GET);
+                        break;
                     case "DELETE":
                             $this->_request = $this->cleanInputs($_GET);
                             break;
