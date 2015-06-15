@@ -240,6 +240,58 @@ private function greetings() {
         }
         
     }
+    
+    private function weather() {
+        if ($this->get_request_method() != "GET") {
+            $this->response('', 406);
+        }
+        //$ques=preg_replace('/\s+/', ' ', $ques);
+        //  $ques=str_replace('?','',$ques);
+        //  $ques=explode(" ",trim($ques));
+        $question = strtolower($this->_request['q']);
+        $ques = preg_replace('/\s+/', ' ', $question);
+        $ques = str_replace('?', '', $ques);
+        $ques = explode(" ", trim($ques));
+
+        $location = $ques[count($ques) - 1];
+        $url = 'http://api.openweathermap.org/data/2.5/weather?q=' . $location;
+        $c = file_get_contents($url);
+        $res = json_decode($c, true);
+        //echo $c ;
+        if ($res['cod'] === 200) {
+            if (strpos($question, 'temperature') !== false) {
+                $k = $res['main']['temp'];
+                $c = $k - 273.15;
+                $response = array("answer" => $c . "C" . " or " . $k . "K");
+                $this->response($this->json($response), 200);
+            }
+            else if (strpos($question, 'weather') !== false) {
+                
+                $weather = explode(" ", $question);
+
+                $res = strtolower($res['weather'][0]['main']);
+                if (strcmp($weather[2], $res) === 0) {
+                    $response = array("answer" => "Yes");
+                    $this->response($this->json($response), 200);
+                } else {
+                    $response = array("answer" => "No");
+                    $this->response($this->json($response), 200);
+                }
+            }            
+            else if (strpos($question, 'humidity') !== false) {
+                $hum = $res['main']['humidity'];
+                $response = array("answer" => $hum . "%");
+                $this->response($this->json($response), 200);
+            } 
+        }
+        else if($res['cod'] === "404")
+        {
+           // echo "not f.";
+             $response = array("answer" => "Not found.");
+             $this->response($this->json($response), 404);
+        }
+        
+    }
     private function users()
     {
         if($this->get_request_method() != "GET"){
