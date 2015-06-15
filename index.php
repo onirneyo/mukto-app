@@ -11,13 +11,13 @@ class INDEX //extends REST
 
         private $_method = "";		
         private $_code = 200;
-	private $db = NULL;
+	
 	
 	public function __construct(){
-            //parent::__construct();
+           
             $this->inputs();
-            $this->dbConnect();		// Initiate Database connection
-            $this->sessionStart();
+          
+         //   $this->sessionStart();
 	}
                 
         private function sessionStart(){
@@ -136,25 +136,14 @@ class INDEX //extends REST
         exit;
     }
 	
-    private function dbConnect(){
-        $dsn = "pgsql:"
-                . "host=ec2-54-83-17-8.compute-1.amazonaws.com;"
-                . "dbname=dfnfm0d7dmsvm3;"
-                . "user=reyyqxdapmgdjf;"
-                . "port=5432;"
-                . "sslmode=require;"
-                . "password=M7nPoy1bra2hKNXbjdC8M6XIpI";
-
-        $this->db = new PDO($dsn);
-        
-    }
+  
     
     public function processApi(){
         $func = strtolower(trim(str_replace("/","",$_REQUEST['rquest'])));
         if((int)method_exists($this,$func) > 0)
                 $this->$func();
         else
-                $this->response('',404);				// If the method not exist with in this class, response would be "Page not found".
+                $this->response('',404);				
     }
     
     
@@ -339,120 +328,8 @@ private function greetings() {
             $this->response($this->json($response),404);
         }
     }
-    private function users()
-    {
-        if($this->get_request_method() != "GET"){
-            $this->response('',406);
-	}
-        $sql = "SELECT employee_id, last_name, first_name, title FROM employees ORDER BY last_name ASC, first_name ASC";
-        $result = $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-        if(count($result) > 0){
-            // If success everythig is good send header as "OK" and return list of users in JSON format
-            $this->response($this->json($result), 200);//echo json_encode($res);
-        }
-        else
-        {
-            $this->response('',204);
-        }
-    }
-    //
+   
     
-    private function registration()
-    {
-            if($this->get_request_method() != "POST"){
-                    $this->response('',406);
-            }
-
-            $lname = $this->_request['last_name'];		
-            $fname= $this->_request['first_name'];
-            $title = $this->_request['title'];
-
-            if( !empty($lname) and !empty($fname) and !empty($title)){
-                
-                $sql = "INSERT INTO employees ( last_name, first_name,title)
-                            VALUES ( '$lname', '$fname','$title')";
-                if ($this->db->query($sql) == TRUE) {
-                    $msg = array("Insert Status" => "Success");
-                    $this->response($this->json($msg), 200);
-                } else {
-                    $msg = array("Insert Status" => "Fail");
-                    $this->response($this->json($msg), 406);
-                }
-            }
-            $error = array("Status" => "Failed", "Msg" => "Fill all fields correctly");
-            $this->response($this->json($error), 400);
-    }
-    
-    private function login(){
-                // Cross validation if the request method is POST else it will return "Not Acceptable" status
-                if($this->get_request_method() != "POST"){
-                        $this->response('',406);
-                }
-
-                $id = $this->_request['id'];		
-                $fname = $this->_request['first_name'];
-                //$password = md5($password);
-
-
-                // Input validations
-                if(!empty($id) and !empty($fname))
-                {
-                        //if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                        $sql = "SELECT first_name, last_name,title FROM employees WHERE first_name = '".$fname."' AND  employee_id = '".$id."'LIMIT 1";
-                        $result = $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-                        if(count($result) > 0)
-                        {
-                            //$result = $result->fetch_assoc();// mysql_fetch_array($sql,MYSQL_ASSOC);
-                            //echo $result['first_name'];
-                            //echo $result['last_name'];
-                            //$_SESSION['USER_EMAIL'] = $result['user_email'];
-                            //$_SESSION['USER_STATUS'] = $result['user_status'];
-                            $this->response($this->json($result), 200);
-                        }
-                        $this->response('', 204);	// If no records "No Content" status
-                        //}
-                }
-                // If invalid inputs "Bad Request" status message and reason
-                $error = array("status" => "Failed", "msg" => "Invalid Email address or Password");
-                $this->response($this->json($error), 400);
-        }
-                
-        private function logout()
-        {
-            if($this->get_request_method() != "GET"){
-                $this->response('',406);
-            }
-            if( isset($_SESSION['USER']) ){
-                session_destroy();
-                $this->response('', 200);
-            }
-            else {
-                $this->response('', 204);
-            }               
-        }
-    
-    private function remove(){
-        if($this->get_request_method() != "POST"){
-                $this->response('',406);
-        }
-        
-        $id = $this->_request['id'];
-        $sql = "SELECT * FROM employees WHERE employee_id = ".$id;
-        $result = $this->db->query($sql)->fetchAll();
-        //$rows = $result->fetch(PDO::FETCH_NUM);//$result->rowCount();
-        //echo count($result)." rows";
-        //echo $rows . " row(s) returned.\n";
-        if(count($result) > 0)
-        {
-            $sql = "DELETE FROM employees WHERE employee_id = ".$id;
-            $this->db->query($sql);
-            $success = array("status" => "Success", "msg" => "Account remove successfully.");
-            $this->response($this->json($success),200); 
-        }
-        else {
-            $this->response('',401);
-        }
-    }
     
 }
 	
