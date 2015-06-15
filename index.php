@@ -138,7 +138,7 @@ class INDEX //extends REST
     }
 	
   
-    
+   
     public function processApi(){
         $func = strtolower(trim(str_replace("/","",$_REQUEST['rquest'])));
         if((int)method_exists($this,$func) > 0)
@@ -282,7 +282,6 @@ private function greetings() {
         }
         
     }
-    
     private function qa()
     {
         if($this->get_request_method() != "GET")
@@ -296,6 +295,7 @@ private function greetings() {
         
         $sQuery = json_decode($sQuery, true);
         $sq = $sQuery['queries'][0]['query'];
+        $response = NULL;
          if($sq!== NULL)
         {
        
@@ -304,15 +304,17 @@ private function greetings() {
         $data = json_decode($data,true);
         if($data['results']['bindings'] != NULL)
         {
-            $token = $data['head']['vars'][0];
-            $multi_ln_answer = $data['results']['bindings'];
-            $response = NULL;
-            foreach($multi_ln_answer as $single_ln_answer)
+             
+            $i = $data['head']['vars'][0];
+            
+            $multi_ln_res = $data['results']['bindings'];
+           
+            foreach($multi_ln_res as $res)
             {
-                $temp_token = $single_ln_answer[$token];
-                if($temp_token['xml:lang']=='en') 
+                $t = $res[$i];
+                if($t['xml:lang']=='en') 
                 {
-                    $response  = array("answer"=>$temp_token['value']);
+                    $response  = array("answer"=>$t['value']);
                 }
             }
             $this->response($this->json($response),200);
