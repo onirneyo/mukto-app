@@ -179,9 +179,10 @@ private function greetings() {
         $question = str_replace('?', '.', $question);
         //  echo $question;
 
-        if (strpos($question, 'hi') !== false or strpos($question, 'hello') !== false or strpos($question, 'good morning') !== false
-                or strpos($question, 'good night') !== false or strpos($question, 'good evening') !== false) {
-            $ans = NULL;
+        if (strpos($question, 'hello') !== false or strpos($question, 'hi') !== false or strpos($question, 'good morning') !== false
+                or strpos($question, 'good night') !== false or strpos($question, 'good evening') !== false)
+                        {
+            $res = NULL;
 
 
             $dot = ".";
@@ -210,7 +211,7 @@ private function greetings() {
                  if(strpos($key, $first_two)!==false)
                  {
                      
-                     $ans=$ans.$value;
+                     $res=$res.$value;
                      //echo $ans."\n";
                  }
                          
@@ -225,8 +226,13 @@ private function greetings() {
 
             
 
-            $response = array("answer" => "Hello, Kitty!" . $ans);
+            $response = array("answer" => "Hello, Kitty!" . $res);
             $this->response($this->json($response), 200);
+        }
+       else
+        {
+           $response=NULL;
+            $this->response($response,204); 
         }
         
     }
