@@ -159,7 +159,87 @@ class INDEX //extends REST
     
     
     /////////////////////// Write functions Below ///////////////////////////////////////////////////////////
+private function greetings() {
 
+
+
+        if ($this->get_request_method() != "GET") {
+            $this->response('', 406);
+        }
+        $greetings = array("i am kitty" => "",
+            "how are you" => " I am fine.",
+            "how is your day going" => " Alright.",
+            "what is your name" => " I am Bot.",
+            "what’s up" => " Not much.",
+            "what’s new" => " Not much.",
+            "how’s your day" => " Fine.",
+            "how’s your day going" => " Fine.",
+            "good morning" => " Good morning.",
+            "good night" => " Good night.",
+            "good evening" => " Good evening.",
+            "nice to meet you"=> " You too.",
+            "good to see you"=> " You too."
+            
+        );
+        // echo $greetings['i am kitty'];
+        $question = strtolower($this->_request['q']);
+        $question = preg_replace('/\s+/', ' ', $question);
+        $question = str_replace('!', '.', $question);
+        
+        $question = str_replace('?', '.', $question);
+        //  echo $question;
+
+        if (strpos($question, 'hi') !== false or strpos($question, 'hello') !== false or strpos($question, 'good morning') !== false
+                or strpos($question, 'good night') !== false or strpos($question, 'good evening') !== false) {
+            $ans = NULL;
+
+
+            $dot = ".";
+
+            $position = stripos($question, $dot); //find first dot position
+            $p = 0;
+            $offset = 0;
+            while ($position !== false) { //if there's a dot in our soruce text do
+                // echo $first_two.'=' ;
+                // $p=$position+1;
+                $p = $offset;
+                $position = stripos($question, $dot, $offset);
+                $offset = $position + 1; //prepare offset
+                $first_two = substr($question, $p, $position - $p );
+
+                /*for ($i = 0; $i < count($greetings); $i++) {
+                    if(strpos($first_two,$greetings)!==false)
+                    {
+                        $ans=$ans.$greetings[$first_two];
+                    }
+                    
+                }*/
+             foreach ($greetings as $key=>$value)
+             {
+                // echo $key." ".$value."\n";
+                 if(strpos($key, $first_two)!==false)
+                 {
+                     
+                     $ans=$ans.$value;
+                     //echo $ans."\n";
+                 }
+                         
+             }
+
+
+                //echo $first_two."\n" ; //add a dot
+            }
+            //echo '\n';
+
+
+
+            
+
+            $response = array("answer" => "Hello, Kitty!" . $ans);
+            $this->response($this->json($response), 200);
+        }
+        
+    }
     private function users()
     {
         if($this->get_request_method() != "GET"){
