@@ -292,6 +292,53 @@ private function greetings() {
         }
         
     }
+    
+    private function qa()
+    {
+        if($this->get_request_method() != "GET")
+        {
+            $this->response('',406);
+	}
+        
+        $ques = $this->_request['q'];
+        $url = 'http://quepy.machinalis.com/engine/get_query?question='. urlencode($ques);
+        $sQuery = file_get_contents($url);  
+        
+        $sQuery = json_decode($sQuery, true);
+        $sq = $sQuery['queries'][0]['query'];
+         if($sq!== NULL)
+        {
+       
+        $url = 'http://dbpedia.org/sparql?query='.urlencode($sq).'&format=application/json';
+        $data = file_get_contents($url);
+        $data = json_decode($data,true);
+        if($data['results']['bindings'] != NULL)
+        {
+            $token = $data['head']['vars'][0];
+            $multi_ln_answer = $data['results']['bindings'];
+            $response = NULL;
+            foreach($multi_ln_answer as $single_ln_answer)
+            {
+                $temp_token = $single_ln_answer[$token];
+                if($temp_token['xml:lang']=='en') 
+                {
+                    $response  = array("answer"=>$temp_token['value']);
+                }
+            }
+            $this->response($this->json($response),200);
+        }
+        else
+        {
+            $response  = array("answer"=>"Your majesty! Jon Snow knows nothing! So do I!");
+            $this->response($this->json($response),404);
+        }
+        }
+        else
+        {
+            $response  = array("answer"=>"Your majesty! Jon Snow knows nothing! So do I!");
+            $this->response($this->json($response),404);
+        }
+    }
     private function users()
     {
         if($this->get_request_method() != "GET"){
