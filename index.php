@@ -22,6 +22,7 @@ class INDEX //extends REST
                 
         private function sessionStart(){
             session_start();
+            //
         }
         
         private function get_status_message(){
