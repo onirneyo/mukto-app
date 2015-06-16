@@ -173,16 +173,15 @@ private function greetings() {
         // echo $greetings['i am kitty'];
         $question = strtolower($this->_request['q']);
         $question = preg_replace('/\s+/', ' ', $question);
-        $question = str_replace('!', '.', $question);
+       // $question = str_replace('!', '.', $question);
         
         $question = str_replace('?', '.', $question);
         //  echo $question;
 
-        if (strpos($question, 'hello!') !== false or strpos($question, 'hi!') !== false or strpos($question, 'good morning!') !== false
-                or strpos($question, 'good night!') !== false or strpos($question, 'good evening!') !== false)
-                        {
+          if (strpos($question, 'hello!') !== false or strpos($question, 'hi!') !== false or strpos($question, 'good morning!') !== false
+                or strpos($question, 'good night!') !== false or strpos($question, 'good evening!') !== false) {
             $res = NULL;
-
+            $question = str_replace('!', '.', $question);
 
             $dot = ".";
 
