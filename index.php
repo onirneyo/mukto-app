@@ -229,8 +229,8 @@ private function greetings() {
         }
        else
         {
-           $response=NULL;
-            $this->response($response,204); 
+         //  $response=NULL;
+            $this->response('',204); 
         }
         
     }
