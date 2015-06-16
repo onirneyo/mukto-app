@@ -318,7 +318,7 @@ private function greetings() {
             foreach($multi_ln_res as $res)
             {
                 $t = $res[$i];
-                if($t['xml:lang']=='en') 
+               // if($t['xml:lang']=='en') 
                 {
                     $response  = array("answer"=>$t['value']);
                 }
