@@ -317,11 +317,17 @@ private function greetings() {
            
             foreach($multi_ln_res as $res)
             {
+               
                 $t = $res[$i];
-               // if($t['xml:lang']=='en') 
-                {
-                    $response  = array("answer"=>$t['value']);
-                }
+                
+                    
+                    if (array_key_exists('xml:lang', $t)) {
+                        if ($t['xml:lang'] == 'en') {
+                            $response = array("answer" => $t['value']);
+                        }
+                    } else {
+                        $response = array("answer" => $t['value']);
+                    }
             }
             $this->response($this->json($response),200);
         }
