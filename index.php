@@ -350,9 +350,6 @@ private function greetings() {
 $api = new INDEX;
 
 $api->processApi();
-//$urlParams = explode('/', $_SERVER['REQUEST_URI']);
-//$functionName = $urlParams[1];
-//$api->$functionName();                  
 
 
 
