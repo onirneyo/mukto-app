@@ -178,8 +178,8 @@ private function greetings() {
         $question = str_replace('?', '.', $question);
         //  echo $question;
 
-        if (strpos($question, 'hello') !== false or strpos($question, 'hi') !== false or strpos($question, 'good morning') !== false
-                or strpos($question, 'good night') !== false or strpos($question, 'good evening') !== false)
+        if (strpos($question, 'hello!') !== false or strpos($question, 'hi!') !== false or strpos($question, 'good morning!') !== false
+                or strpos($question, 'good night!') !== false or strpos($question, 'good evening!') !== false)
                         {
             $res = NULL;
 
