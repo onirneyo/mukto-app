@@ -347,9 +347,6 @@ private function greetings() {
 }
 	
 $api = new INDEX;
-
 $api->processApi();
-
-
 
 
