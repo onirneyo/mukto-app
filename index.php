@@ -230,7 +230,7 @@ private function greetings() {
        else
         {
          //  $response=NULL;
-            $this->response('',204); 
+            $this->response('',404); 
         }
         
     }
