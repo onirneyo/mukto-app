@@ -313,9 +313,9 @@ private function greetings() {
              
             $i = $data['head']['vars'][0];
             
-            $multi_ln_res = $data['results']['bindings'];
+            $multires = $data['results']['bindings'];
            
-            foreach($multi_ln_res as $res)
+            foreach($multires as $res)
             {
                
                 $t = $res[$i];
